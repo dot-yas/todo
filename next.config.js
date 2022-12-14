@@ -7,4 +7,6 @@ const withPWA = require("next-pwa") ({
 module.exports = withPWA({
   reactStrictMode: true,
   swcMinify: true,
+  basePath: process.env.GITHUB_ACTIONS && "/repository_name",
+  trailingSlash: true,
 });
