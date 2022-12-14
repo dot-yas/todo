@@ -46,7 +46,7 @@ export default function Home() {
         </div>
         
         {todos.map((todo, index) => (
-          <div className={styles.text_line}>
+          <div className={styles.text_line} key={index}>
             <TextField className={styles.text_field} id="text_field" label="" variant="standard" onChange={e => editTodo(index, e.target.value) }/>
             <Button variant="contained" onClick={() => deleteTodo(index)}>delete</Button>
           </div>
