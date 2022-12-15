@@ -3,7 +3,7 @@
     "background_color": "#455ca6",
     "display": "standalone",
     "scope": "/",
-    "start_url": "/",
+    "start_url": "/todo",
     "name": "Todo App",
     "description": "Todo\u306e\u30a2\u30d7\u30ea\u3067\u3059",
     "short_name": "Todo",
