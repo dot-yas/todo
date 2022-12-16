@@ -1,27 +1,51 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { useState } from "react";
+import Head from "next/head"
+import styles from "../styles/Home.module.css"
+import Button from "@mui/material/Button"
+import IconButton from "@mui/material/IconButton"
+import AddIcon from "@mui/icons-material/Add"
+import DeleteIcon from "@mui/icons-material/Delete"
+import TextField from "@mui/material/TextField"
+import Stack from "@mui/material/Stack"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogTitle from "@mui/material/DialogTitle"
+import { useState } from "react"
 
 export default function Home() {
-
   const [todos, setTodos] = useState<string[]>([])
+  const [open, setOpen] = useState(false)
 
   const addTodo = () => {
-    setTodos([...todos, ""]);
-  };
+    if (todos.includes("")) {
+      return
+    } else {
+      setTodos([...todos, ""])
+    }
+  }
 
   const editTodo = (insertIndex: number, newValue: string) => {
     setTodos((prevTodos) =>
-      prevTodos.map((value, index) => (index == insertIndex ? newValue : value))
+      prevTodos.map((value, index) =>
+        index === insertIndex ? newValue : value
+      )
     )
   }
 
   const deleteTodo = (deleteIndex: number) => {
-    setTodos((prevTodos) =>
-      prevTodos.filter((value, index) => index != deleteIndex)
-    )
+    setTodos(() => todos.filter((value, index) => index !== deleteIndex))
+  }
+
+  const deleteAll = () => {
+    setOpen(false)
+    setTodos([])
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
@@ -33,28 +57,63 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        
-        <ul>
-        {todos.map((todo) => (
-          <li key={todo}>{todo}</li>
-        ))}
-        </ul>
-
-        <div>
-          <Button variant="contained" onClick={addTodo}>Add</Button>
-        </div>
-        
-        {todos.map((todo, index) => (
-          <div className={styles.text_line} key={index}>
-            <TextField className={styles.text_field} id="text_field" label="" variant="standard" onChange={e => editTodo(index, e.target.value) }/>
-            <Button variant="contained" onClick={() => deleteTodo(index)}>delete</Button>
+        <Stack spacing={2}>
+          <div>
+            <Button
+              startIcon={<AddIcon />}
+              variant="contained"
+              onClick={addTodo}
+            >
+              Add
+            </Button>
           </div>
-        ))}
+
+          {todos.map((todo, index) => (
+            <div className={styles.text_line} key={index}>
+              <TextField
+                label=""
+                variant="standard"
+                value={todo}
+                onChange={(e) => editTodo(index, e.target.value)}
+              />
+              <IconButton aria-label="delete" onClick={() => deleteTodo(index)}>
+                <DeleteIcon />
+              </IconButton>
+            </div>
+          ))}
+
+          <div>
+            <Button
+              startIcon={<DeleteIcon />}
+              variant="contained"
+              color="error"
+              onClick={handleClickOpen}
+            >
+              Delete All
+            </Button>
+          </div>
+        </Stack>
+
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"すべて削除しますか？"}
+          </DialogTitle>
+
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>Cancel</Button>
+            <Button onClick={deleteAll}>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
       </main>
 
-      <footer className={styles.footer}>
-          Powered by {'yas'}
-      </footer>
+      <footer className={styles.footer}>Powered by {"yas"}</footer>
     </div>
   )
 }
