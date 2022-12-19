@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const withPWA = require("next-pwa") ({
-  dest: "public", // swの出力ディレクトリ
+  dest: "public",
 })
 
 module.exports = withPWA({
