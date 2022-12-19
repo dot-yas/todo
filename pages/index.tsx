@@ -10,9 +10,19 @@ import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogTitle from "@mui/material/DialogTitle"
 import { useState } from "react"
+import { atom, useRecoilState } from "recoil"
+import { recoilPersist } from "recoil-persist"
+
+const { persistAtom } = recoilPersist()
+
+const todoState = atom({
+  key: 'todoState',
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+})
 
 export default function Home() {
-  const [todos, setTodos] = useState<string[]>([])
+  const [todos, setTodos] = useRecoilState<string[]>(todoState)
   const [open, setOpen] = useState(false)
 
   const addTodo = () => {
